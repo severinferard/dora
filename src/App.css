@@ -1,6 +1,12 @@
 .App {
   text-align: center;
+  height: 100vh;
+  /* overflow:auto */
 }
+
+/* html, body, #root, .App, .App>div {
+	height: 100%
+  } */
 
 .App-logo {
   height: 40vmin;

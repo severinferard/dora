@@ -1,0 +1,130 @@
+.class-panel-wrapper {
+	height: 100%;
+	width: 100%;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.class-panel-wrapper .ant-row {
+	flex: 1;
+}
+
+.student-col-wrapper {
+	height: 100%;
+	padding: 20px;
+
+
+
+}
+
+.student-col-wrapper .ant-divider {
+	height: 90%;
+	margin-inline: 0;
+	position: absolute;
+    right: 0;
+}
+
+
+.search-box-wrapper {
+	padding-inline: 40px;
+	padding-top: 20px;
+}
+
+.student-list-wrapper .ant-list-item-meta-content {
+	height: 32px;
+}
+
+.student-list-wrapper .ant-list-item-meta-title {
+	line-height: 32px;
+}
+
+.list-scroll {
+	height: 70%;
+	overflow: hidden;
+	padding-inline: 40px;
+}
+
+#new-student-wrapper {
+	padding-inline: 40px;
+	padding-bottom: 20px;
+}
+
+.session-list-wrapper {
+	padding-inline: 40px;
+	/* padding-top: 20px; */
+	height: 100%;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+.session-list-wrapper .ant-table-container {
+	height: 100%;
+    max-height: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+	top: 0;
+	left: 0;
+	right: 0;
+	flex-direction: column;
+	border-left: none !important;
+}
+
+.session-list-wrapper .ant-table {
+	position: relative;
+	height: 100%;
+}
+
+.session-list-wrapper .ant-spin-container {
+	position: relative;
+	height: 100%;
+}
+
+.session-list-wrapper .ant-spin-nested-loading {
+	position: relative;
+	height: 100%;
+}
+
+.session-list-wrapper .ant-table-wrapper {
+	position: relative;
+	height: 100%;
+	/* border-bottom: 1px solid #f0f0f0; */
+}
+
+.session-list-wrapper .ant-table-header {
+	overflow: visible !important;
+}
+
+.session-list-wrapper .ant-table-header, .session-list-wrapper .ant-table-body {
+	/* border-left: 1px solid #f0f0f0; */
+}
+.class-panel-wrapper .ant-spin {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%);
+}
+
+/* .session-list-wrapper, .ant-table-wrapper, .ant-spin-nested-loading, .ant-spin-container, .ant-table-fixed-header, .ant-table-container {
+	height: 100%;
+} */
+
+.student-col-inner {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.student-table-wrapper {
+	flex-grow: 1;
+}
+
+.student-searchbox {
+	/* height: 50px; */
+}
+
+.student-new {
+	/* height: 50px; */
+}

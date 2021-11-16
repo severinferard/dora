@@ -2,13 +2,31 @@
   "name": "dora",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@elastic/datemath": "^5.0.3",
+    "@elastic/eui": "^40.0.0",
+    "@emeraldpay/hashicon-react": "^0.5.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "antd": "^4.16.13",
+    "axios": "^0.23.0",
+    "leaflet": "^1.7.1",
+    "moment": "^2.29.1",
+    "plotly.js": "^2.5.1",
+    "prop-types": "^15.7.2",
+    "rainbowvis.js": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-leaflet": "^3.2.2",
+    "react-plotly.js": "^2.5.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "recharts": "^2.1.6",
+    "use-deep-compare-effect": "^1.8.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -23,16 +41,13 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.14.5",
+    "@babel/plugin-syntax-nullish-coalescing-operator": "^7.8.3"
   }
 }

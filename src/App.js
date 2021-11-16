@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import DashBoard from './Dashboard'
+import RunPage from "./NewRunPage"
+import { BrowserRouter, HashRouter, Switch, Route, Redirect } from 'react-router-dom'
+import NewDashboard from "./NewDashboard"
 
-function App() {
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <HashRouter>
+        <Switch>
+          <Route exact path='/'>
+            <Redirect to='/dashboard' />
+          </Route>
+          <Route path='/dashboard' component={NewDashboard} />
+		  <Route exact path='/run/:session_id/:run_id' component={RunPage} /> 
+        </Switch>
+      </HashRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
