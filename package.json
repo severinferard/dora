@@ -15,6 +15,7 @@
     "axios": "^0.23.0",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
+    "nvm": "^0.0.4",
     "plotly.js": "^2.5.1",
     "prop-types": "^15.7.2",
     "rainbowvis.js": "^1.0.1",

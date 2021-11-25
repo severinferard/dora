@@ -10275,6 +10275,11 @@
   "resolved" "https://registry.npmjs.org/numeric/-/numeric-1.2.6.tgz"
   "version" "1.2.6"
 
+"nvm@^0.0.4":
+  "integrity" "sha1-OKF46dMbKDUIyS0VydqGHRqSELw="
+  "resolved" "https://registry.npmjs.org/nvm/-/nvm-0.0.4.tgz"
+  "version" "0.0.4"
+
 "nwsapi@^2.2.0":
   "integrity" "sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ=="
   "resolved" "https://registry.npmjs.org/nwsapi/-/nwsapi-2.2.0.tgz"

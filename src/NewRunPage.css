@@ -238,3 +238,38 @@ html {
 	50% { border-color: rgb(7, 181, 204); }
   }
 
+  #map-switch {
+	  position: absolute;
+	  bottom: 30px;
+	  right: 20px;
+	  z-index: 800;
+  }
+
+  #map-switch .ant-switch:not(.ant-switch-checked) {
+	  background-color: rgb(255 255 255 / 77%);
+  }
+
+  .smiley-rating {
+	display: flex;
+	flex-direction: row;
+	margin: auto;
+	justify-content: center;
+  }
+
+  .smiley-rating img {
+	  width: 50px;
+	  filter: grayscale(100%);
+	  margin: 0 4px 0 4px;
+	  transition: all .05s linear;
+  }
+
+  .smiley-rating img:hover{
+	transform: scale(1.1);
+	filter: grayscale(0%);
+	cursor: pointer;
+}
+
+.smiley-rating .selected {
+	filter: grayscale(0%);
+	}
+

@@ -83,7 +83,7 @@ const NewClassContentPanel = (props) => {
       title: "Seance",
       dataIndex: "session_name",
       key: "session_name",
-      render: (text) => <a>{text}</a>,
+      render: (text, record) => <a href={`/#/dashboard?panel=session&id=${record._id}`}>{text}</a>,
     },
     {
       title: "Date",

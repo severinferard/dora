@@ -118,12 +118,26 @@ const Dashboard = () => {
     window.location.href = `/#/dashboard/`;
   }, [treeData]);
 
+  const getSessionFromRun = (run_id) => {
+	for (const school of treeData) {
+        for (const clss of school.classes) {
+          for (const session of clss.sessions) {
+            for (const run of session.runs) {
+				if (run._id === run_id)
+					return session
+			}
+          }
+        }
+      }
+  }
+
   const onNodeSelected = (type, id) => {
-    if (!type) {
+    if (!type)
       window.location.href = `/#/dashboard/`;
-      return;
-    }
-    window.location.href = `/#/dashboard?panel=${type}&id=${id}`;
+    else if (type === "run")
+		window.location.href = `/#/run/${getSessionFromRun(id)._id}/${id}`;
+	else
+    	window.location.href = `/#/dashboard?panel=${type}&id=${id}`;
     // setPanelShown(type);
     // setPanelData(node ? node.data : null);
   };

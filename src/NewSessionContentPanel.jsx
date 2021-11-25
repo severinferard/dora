@@ -86,12 +86,17 @@ const NewSessionContentPanel = (props) => {
   }, []);
 
   // Colums for the runs table
-  const runsColumns = useMemo(() => {
-    return [
+  const runsColumns = [
       {
         title: "Élève",
-        dataIndex: "id",
+        dataIndex: "student",
         key: "id",
+		render: (_, record) =>{
+			if (record.student !== undefined && students.length) {
+				return getStudentFullName(students.find(s => s._id == record.student))
+			} else
+				return record.id
+		}
       },
       {
         title: "Movuino",
@@ -116,13 +121,12 @@ const NewSessionContentPanel = (props) => {
 				  }} />
             </a>
             <a>
-              <DeleteOutlined onClick={() => {}} />
+              <DeleteOutlined onClick={(e) => {e.stopPropagation(); deleteRun(b._id)}} />
             </a>
           </Space>
         ),
       },
     ];
-  }, []);
 
   const [mapPos, setMapPos] = useState([48.857231, 2.324309]);
   const [map, setMap] = useState();
@@ -130,12 +134,20 @@ const NewSessionContentPanel = (props) => {
   const [openOverlayOnEdit, setOpenOverlayOnEdit] = useState(null);
   const [openOverlayOnNew, setOpenOverlayOnNew] = useState(false);
   const [beacons, setBeacons] = useState(props.data ? props.data.beacons : []);
+  const [students, setStudents] = useState([]);
   const markerGroup = useRef();
 
   // Updated the component state when the data props is updated.
   useEffect(() => {
     if (!props.data) return;
     setBeacons(props.data.beacons);
+	console.log(props.data)
+	fetch(`/api/classes/${props.data.class_id}/students`, { method: "GET" })
+          .then((res) => res.json())
+          .then((studs) => {
+			  console.log("HERERERRE", studs);
+            setStudents(studs);
+          });
   }, [props.data]);
 
   // When the map component has been rendered, update the map viewport to fit all the beacons.
@@ -166,6 +178,10 @@ const NewSessionContentPanel = (props) => {
       }
     });
   };
+
+  const getStudentFullName = (student) => {
+	  return `${student.firstName} ${student.lastName}`
+  }
 
   // Called when the delete button of the page is pressed. Will prompte the user with a confirmation box.
   const onDeleteSession = (sess) => {
@@ -205,6 +221,38 @@ const NewSessionContentPanel = (props) => {
     });
   };
 
+  const setSessionAsSelected = () => {
+	fetch(`/api/targetSession`, {
+		method: "POST",
+		headers: {
+		  Accept: "application/json",
+		  "Content-Type": "application/json",
+		},
+		body: JSON.stringify({id: props.data._id}),
+	  }).then((res) => {
+		if (res.status == 200) {
+		  console.log("Session successfully selected");
+		  props.onUpdate();
+		}
+	  });
+  }
+
+  const deleteRun = (id) => {
+	fetch(`/api/runs/${props.data._id}/${id}`, {
+		method: "DELETE",
+		headers: {
+		  Accept: "application/json",
+		  "Content-Type": "application/json",
+		},
+		body: "",
+	  }).then((res) => {
+		if (res.status == 200) {
+		  console.log("Run successfully deleted");
+		  props.onUpdate();
+		}
+	  });
+  }
+
   return (
     <div className="session-panel-wrapper">
       <PageHeader
@@ -214,8 +262,10 @@ const NewSessionContentPanel = (props) => {
         subTitle={props.data.class_name}
         extra={[
           <Space key="1">
-            <p style={{ marginBottom: 0 }}>Telecharger vers cette seance</p>
-            <Radio onChange></Radio>
+            <p style={{ marginBottom: 0 }}>Téléverser vers cette seance</p>
+			<Radio.Group onChange={setSessionAsSelected} value={props.data.isSelected}>
+            	<Radio value={true}></Radio>
+			</Radio.Group>
           </Space>,
           <Button key="2" onClick={() => onDeleteSession(props.data)}>
             Supprimer
