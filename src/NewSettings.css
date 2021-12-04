@@ -1,0 +1,19 @@
+#settings-container {
+	width: 100%;
+	padding-inline: 20px;
+}
+
+#settings-container .ant-card-head-title {
+	text-align: left;
+}
+
+.timer {
+	text-align: center;
+	font-weight: 400;
+	font-size: 2em;
+}
+
+#timer-wrapper {
+	width: 100%;
+	text-align: center;
+}

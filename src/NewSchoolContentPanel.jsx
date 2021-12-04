@@ -1,4 +1,5 @@
-import { PageHeader, Button, Descriptions, List, Row, Col, Empty, Form, Modal, Input } from "antd";
+import { PageHeader, Button, Descriptions, List, Row, Col, Empty, Form, Modal, Input, Space, Table } from "antd";
+import { FullscreenOutlined, FormOutlined, DeleteOutlined, CloseOutlined, RightOutlined, SelectOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import "./NewSchoolContentPanel.css";
 
@@ -6,6 +7,36 @@ const NewSchoolContentPanel = (props) => {
   const [newClassModalIsVisible, setNewClassModalIsVisible] = useState(false);
   const [newClassModalIsLoading, setNewClassModalIsLoading] = useState(false);
   const [newClassForm] = Form.useForm();
+
+  const columns = [
+    {
+      title: "Classe",
+      dataIndex: "name",
+      key: "_id",
+      render: (idx, record) => <a href={`/#/dashboard?panel=class&id=${record._id}`}>{record.name}</a>,
+    },
+    {
+      title: "Séances",
+      dataIndex: "sessions",
+      key: "_id",
+      render: (index, record) => record.sessions.length,
+    },
+    {
+      title: "Actions",
+      dataIndex: "_id",
+      key: "_id",
+      render: (index, record) => (
+        <a>
+          <DeleteOutlined
+            onClick={(e) => {
+              onDeleteClass(record);
+            }}
+          />
+        </a>
+      ),
+      width: 40,
+    },
+  ];
 
   const showNewClassModal = () => {
     setNewClassModalIsVisible(true);
@@ -130,48 +161,15 @@ const NewSchoolContentPanel = (props) => {
         </Descriptions>
       </PageHeader>
       <div className="list-container">
-        <List
-          itemLayout="horizontal"
-          size="small"
-          dataSource={props.data.classes}
+        <Table
+          columns={columns}
           locale={{
-            emptyText: (
-              <Empty description="Aucune classe renseignée">
-                <Button size="small" onClick={showNewClassModal}>
-                  Nouvelle classe
-                </Button>
-              </Empty>
-            ),
+            emptyText: <Empty description="Aucune balise"></Empty>,
           }}
-        >
-          {props.data.classes.map((item) => {
-            return (
-              <List.Item
-                key={item._id}
-                actions={[
-                  <a key="list-loadmore-edit">Voir</a>,
-                  <a
-                    key="list-loadmore-edit"
-                    onClick={() => {
-                      onDeleteClass(item);
-                    }}
-                  >
-                    Supprimer
-                  </a>,
-                ]}
-              >
-                <Row style={{ width: "100%" }}>
-                  <Col span={12}>{item.name}</Col>
-                  <Col span={12}>
-                    {item.sessions.length > 1
-                      ? `${item.sessions.length} séances enregistrées`
-                      : `${item.sessions.length} séance enregistrée`}
-                  </Col>
-                </Row>
-              </List.Item>
-            );
-          })}
-        </List>
+          dataSource={props.data.classes}
+          size="small"
+          pagination={false}
+        ></Table>
       </div>
       <Modal
         title="Nouvelle Classe"
@@ -184,7 +182,11 @@ const NewSchoolContentPanel = (props) => {
         destroyOnClose
       >
         <Form layout="vertical" form={newClassForm} onFinish={OnNewClassFormFinish} preserve={false}>
-          <Form.Item label="Nom ou numero de la classe" name="name" rules={[{ required: true, message: "Nom ou numero de classe manquant" }]}>
+          <Form.Item
+            label="Nom ou numero de la classe"
+            name="name"
+            rules={[{ required: true, message: "Nom ou numero de classe manquant" }]}
+          >
             <Input />
           </Form.Item>
         </Form>

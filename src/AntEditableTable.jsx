@@ -92,14 +92,14 @@ const EditableTable = (props) => {
             <span>
               <a
                 href="javascript:;"
-                onClick={() => save(record)}
+                onClick={(e) => {e.stopPropagation(); save(record)}}
                 style={{
                   marginRight: 8,
                 }}
               >
                 <CheckOutlined />
               </a>
-              <a href="javascript:;" onClick={cancel}>
+              <a href="javascript:;" onClick={(e) => {e.stopPropagation(); cancel(e)}}>
                 <CloseOutlined />
               </a>
             </span>
@@ -107,13 +107,14 @@ const EditableTable = (props) => {
             <>
               <Typography.Link
                 disabled={editingKey !== ""}
-                onClick={() => {
+                onClick={(e) => {
+					e.stopPropagation();
                   edit(record);
                 }}
               >
                 <FormOutlined />
               </Typography.Link>
-              <Typography.Link disabled={editingKey !== ""} onClick={() => del(record)} style={{ marginLeft: 8 }}>
+              <Typography.Link disabled={editingKey !== ""} onClick={(e) => {e.stopPropagation(); del(record)}} style={{ marginLeft: 8 }}>
                 <DeleteOutlined />
               </Typography.Link>
             </>
@@ -146,7 +147,7 @@ const EditableTable = (props) => {
   const save = async (student) => {
     try {
       const row = await form.validateFields();
-      props.onSave({ ...form.getFieldsValue(), _id: student._id });
+      props.onSave({ ...student, ...form.getFieldsValue()});
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
@@ -174,12 +175,15 @@ const EditableTable = (props) => {
         scroll={{ y: "100%" }}
         className="fixed-header-full-height-table"
         locale={props.locale}
-        onRow={(_, index) => {
-          if (index === data.length - 1) {
+		rowClassName={props.rowClassName}
+        onRow={(record, index) => {
+          if (editingKey != '' && index === data.length - 1) {
             return {
               ref: tableRef,
             };
-          }
+          } else if (editingKey != record._id) {
+			  return props.onRow(record, index)
+		  }
         }}
       />
     </Form>

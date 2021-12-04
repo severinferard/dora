@@ -166,9 +166,9 @@ const Dashboard = () => {
               </Menu>
             </Col>
             <Col span={1}>
-              <Button type="primary" icon={<SettingOutlined />} type="link" />
+              <Button type="primary" icon={<SettingOutlined />} type="link" onClick={() => {window.location.href = "#/settings"}}/>
             </Col>
-          </Row>
+          </Row> 
         </Header>
         <Row className="main-wrapper">
           <Col span={5}>

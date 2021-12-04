@@ -128,3 +128,15 @@
 .student-new {
 	/* height: 50px; */
 }
+
+.student-table-row:hover {
+	cursor: pointer;
+}
+
+.student-table-row .ant-table-cell:last-child {
+	text-align: center;
+}
+
+.session-list-wrapper .ant-table-cell:last-child {
+	text-align: center;
+}

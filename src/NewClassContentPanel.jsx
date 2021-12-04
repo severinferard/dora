@@ -1,84 +1,19 @@
-import {
-  PageHeader,
-  Button,
-  Descriptions,
-  List,
-  Row,
-  Col,
-  Empty,
-  Form,
-  Modal,
-  Input,
-  Divider,
-  Avatar,
-  Table,
-  DatePicker,
-  Spin,
-} from "antd";
+import { PageHeader, Button, Descriptions, Row, Col, Empty, Form, Modal, Input, Divider, Avatar, Table, DatePicker } from "antd";
 import { useState, useEffect } from "react";
 import "./NewClassContentPanel.css";
 import AntEditableTable from "./AntEditableTable";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
 const NewClassContentPanel = (props) => {
-  const [addStudentFormOpened, setAddStudentFormOpened] = useState(false);
   const [newSessionModalIsVisible, setNewSessionModalIsVisible] = useState(false);
   const [newSessionModalIsLoading, setNewSessionModalIsLoading] = useState(false);
-  const [students, setStudents] = useState([
-    { firstName: "Clement", lastName: "Guenier", _id: "uytuy", vma: 12 },
-    { firstName: "Ilona", lastName: "Bussod", _id: "nfcvc", vma: 12 },
-    { firstName: "Alexane", lastName: "Iwochewitsch", _id: "aaaa", vma: 12 },
-    { firstName: "Melvin", lastName: "Fribourg", _id: "jytfg", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwec", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qweasdc", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwexxac", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwzxcec", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qweqdaxc", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwghjghec", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwxaxxsec", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qweityuc", vma: 12 },
-    { firstName: "Aziza", lastName: "Chebil", _id: "qwec", vma: 12 },
-  ]);
+  const [students, setStudents] = useState([]);
   const [newSessionForm] = Form.useForm();
   const [isEditingStudent, setIsEditingStudent] = useState(false);
 
-  const showNewSessionModal = () => {
-    setNewSessionModalIsVisible(true);
-  };
-
-  const onNewSessionModalCancel = () => {
-    setNewSessionModalIsVisible(false);
-  };
-
-  const onNewSessionModalOk = () => {
-    newSessionForm.submit();
-  };
-
-  const OnNewSessionFormFinish = (value) => {
-    console.log(value.date.format("DD/MM/YYYY"));
-    setNewSessionModalIsLoading(true);
-    fetch(`/api/sessions?class_id=${props.data._id}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        date: value.date.format("DD/MM/YYYY"),
-        session_name: value.name,
-      }),
-    }).then((res) => {
-      if (res.status == 200) {
-        setNewSessionModalIsVisible(false);
-        setNewSessionModalIsLoading(false);
-        props.onUpdate();
-      }
-    });
-  };
-
-  const columns = [
+  const sessionsTableColumns = [
     {
       title: "Seance",
       dataIndex: "session_name",
@@ -114,7 +49,7 @@ const NewClassContentPanel = (props) => {
             onDeleteSession(sess);
           }}
         >
-          Supprimer
+          <DeleteOutlined />
         </a>
       ),
     },
@@ -126,7 +61,7 @@ const NewClassContentPanel = (props) => {
       dataIndex: "avatar",
       editable: false,
       width: "10%",
-      render: (_, record) => <Avatar src={`https://avatars.dicebear.com/api/bottts/${record.lastName}.svg`} />,
+      render: (_, record) => <Avatar src={`/avatars/bottts${record.avatar}.svg`} />,
     },
     {
       title: "Nom",
@@ -148,22 +83,67 @@ const NewClassContentPanel = (props) => {
     },
   ];
 
-  const onDeleteClassConfirm = () => {
-    fetch(`/api/classes/${props.data._id}`, {
+  // Set the 'students' array state up on data loaded.
+  useEffect(() => {
+    if (!props.data) return;
+    setStudents(props.data.students);
+  }, [props.data]);
+
+  // Called when the 'Nouvelle Seance' button is clicked.
+  const showNewSessionModal = () => {
+    setNewSessionModalIsVisible(true);
+  };
+
+  // Called when the 'Nouvelle seance' cancel button is pressed.
+  const onNewSessionModalCancel = () => {
+    setNewSessionModalIsVisible(false);
+  };
+
+  // Called when the 'Nouvelle seance' OK button is pressed. Submit the form.
+  const onNewSessionModalOk = () => {
+    newSessionForm.submit();
+  };
+
+  // Called when the 'Nouvelle seance' form is sunmited. Send data to server.
+  const OnNewSessionFormFinish = async (value) => {
+    setNewSessionModalIsLoading(true);
+    const res = await fetch(`/api/sessions?class_id=${props.data._id}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        date: value.date.format("DD/MM/YYYY"),
+        session_name: value.name,
+      }),
+    });
+
+    if (res.status == 200) {
+      setNewSessionModalIsVisible(false);
+      setNewSessionModalIsLoading(false);
+      props.onUpdate();
+    }
+  };
+
+  // Delete a class
+  const onDeleteClassConfirm = async () => {
+    const res = await fetch(`/api/classes/${props.data._id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: "",
-    }).then((res) => {
-      if (res.status == 200) {
-        console.log("Class successfully deleted");
-        props.onUpdate();
-      }
     });
+
+    if (res.status == 200) {
+      console.log("Class successfully deleted");
+      props.onUpdate();
+    }
   };
 
+  // Prompt the user for confimation up on clicked on the "Delete class" button.
   const onDeleteClass = () => {
     Modal.confirm({
       title: "Avertissement",
@@ -184,22 +164,24 @@ const NewClassContentPanel = (props) => {
     });
   };
 
-  const onDeleteSessionConfirm = (sess) => {
-    fetch(`/api/sessions/${sess._id}`, {
+  // Delete a session.
+  const onDeleteSessionConfirm = async (sess) => {
+    const res = await fetch(`/api/sessions/${sess._id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: "",
-    }).then((res) => {
-      if (res.status == 200) {
-        console.log("Session successfully deleted");
-        props.onUpdate();
-      }
     });
+
+    if (res.status == 200) {
+      console.log("Session successfully deleted");
+      props.onUpdate();
+    }
   };
 
+  // Prompt the user for confimation up on clicked on the "Delete session" button.
   const onDeleteSession = (sess) => {
     Modal.confirm({
       title: "Avertissement",
@@ -220,58 +202,55 @@ const NewClassContentPanel = (props) => {
     });
   };
 
-  useEffect(() => {
-    if (!props.data) return;
-    setStudents(props.data.students);
-  }, [props.data]);
-
-  const onSave = (student) => {
+  // Called when an edit in the student table is saved. If the student._id === '__new', the edit is a new student that needs to be created.
+  const onSave = async (student) => {
 	  console.log("student", student)
-	setIsEditingStudent(false)
+    setIsEditingStudent(false);
     if (student._id === "__new") {
-      fetch(`/api/classes/${props.data._id}/students`, {
+      const res = await fetch(`/api/classes/${props.data._id}/students`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(student),
-      }).then((res) => {
-        if (res.status == 200) {
-          props.onUpdate();
-        }
       });
+      if (res.status == 200) props.onUpdate();
     } else {
-		console.log("PUT")
-		fetch(`/api/classes/${props.data._id}/students`, {
-			method: "PUT",
-			headers: {
-			  Accept: "application/json",
-			  "Content-Type": "application/json",
-			},
-			body: JSON.stringify(student),
-		  }).then((res) => {
-			if (res.status == 200) {
-			  props.onUpdate();
-			}
-		  });
+      const res = await fetch(`/api/classes/${props.data._id}/students`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(student),
+      });
+      if (res.status == 200) props.onUpdate();
     }
   };
 
-  const onDelete = (student) => {
-	fetch(`/api/classes/${props.data._id}/students`, {
-		method: "DELETE",
-		headers: {
-		  Accept: "application/json",
-		  "Content-Type": "application/json",
-		},
-		body: JSON.stringify(student),
-	  }).then((res) => {
-		if (res.status == 200) {
-		  props.onUpdate();
-		}
-	  });
-  }
+  // Called when the delete student button is clicked
+  const onDelete = async (student) => {
+    const res = await fetch(`/api/classes/${props.data._id}/students`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(student),
+    });
+    if (res.status == 200) props.onUpdate();
+  };
+
+  const onSearch = (e) => {
+    const val = e.nativeEvent.target.value;
+    if (val === "") setStudents(props.data.students);
+    setStudents(
+      props.data.students.filter((stud) => 
+	  	stud.firstName.toLowerCase().includes(val)
+		|| stud.lastName.toLowerCase().includes(val))
+    );
+  };
 
   return (
     <div className="class-panel-wrapper">
@@ -302,7 +281,7 @@ const NewClassContentPanel = (props) => {
           <div className="student-col-wrapper">
             <div className="student-col-inner">
               <div className="student-searchbox">
-                <Search placeholder="Rechercher" onSearch={() => {}} style={{ marginBottom: "20px" }} />
+                <Search placeholder="Rechercher" onChange={onSearch} style={{ marginBottom: "20px" }} />
               </div>
               <div className="student-table-wrapper">
                 <AntEditableTable
@@ -317,8 +296,17 @@ const NewClassContentPanel = (props) => {
                   locale={{
                     emptyText: <Empty description="Aucun élève renseigné"></Empty>,
                   }}
-				  onSave={onSave}
-				  onDelete={onDelete}
+                  onSave={onSave}
+                  onDelete={onDelete}
+                  rowClassName={"student-table-row"}
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: (event) => {
+                        console.log("click");
+                        window.location.href = `/#/student-summary/${record._id}`;
+                      },
+                    };
+                  }}
                 ></AntEditableTable>
               </div>
               <div className="student-new">
@@ -343,7 +331,7 @@ const NewClassContentPanel = (props) => {
         <Col span={12}>
           <div className="session-list-wrapper">
             <Table
-              columns={columns}
+              columns={sessionsTableColumns}
               dataSource={props.data.sessions.map((sess) => {
                 return { ...sess, deleteData: sess, key: sess._id };
               })}

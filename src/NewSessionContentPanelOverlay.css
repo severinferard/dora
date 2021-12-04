@@ -104,3 +104,7 @@
 .sidecard-right .ant-form-item {
 	margin-inline: 0;
 }
+
+.hoverable-row:hover {
+	cursor: pointer;
+}

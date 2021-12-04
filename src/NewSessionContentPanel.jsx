@@ -355,6 +355,7 @@ const NewSessionContentPanel = (props) => {
 					  onClick: e => {window.location.href = `/#/run/${props.data._id}/${record._id}`}
 				  }
 			  }}
+			  rowClassName={"hoverable-row"}
             />
           </div>
         </Col>
