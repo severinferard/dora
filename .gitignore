@@ -1,2 +1,4 @@
 node_modules
 build
+atlases
+.DS_Store
