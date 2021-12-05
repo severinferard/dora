@@ -1,0 +1,117 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dora client</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      #banner {
+        width: 100%;
+        height: 10%;
+        margin: 0;
+        background-color: green;
+      }
+
+      #center-div {
+        margin: auto;
+        width: 100%;
+        text-align: center;
+      }
+      #main-btn {
+        display: block;
+        width: 100%;
+        border: 0px outset #000;
+        height: 25%;
+        margin: 10px 0;
+        font-size: 50px;
+      }
+
+      #secondary-btn {
+        display: none;
+        width: 50%;
+        margin: 10px 0;
+        margin-left: 25%;
+        margin-right: 25%;
+        height: 10%;
+        border: 0px solid #000;
+        font-size: 30px;
+      }
+
+      .btn {
+        border: 1px solid #ddd;
+        background-color: #f0f0f0;
+        padding: 4px 12px;
+
+        -o-transition: background-color 0.2s ease-in;
+        -moz-transition: background-color 0.2s ease-in;
+        -webkit-transition: background-color 0.2s ease-in;
+        transition: background-color 0.2s ease-in;
+      }
+
+      .btn:hover {
+        background-color: #e5e5e5;
+      }
+
+      .btn:active {
+        background-color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="banner"></div>
+    <div id="center-div">
+      <button id="main-btn" class="btn">Start Recording</button>
+      <button id="secondary-btn" class="btn">again</button>
+    </div>
+  </body>
+  <script>
+    let interval;
+
+    posArray = [];
+    writePos = () => {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        posArray.push([pos.coords.latitude, pos.coords.longitude, pos.timestamp]);
+        console.log([pos.coords.latitude, pos.coords.longitude, pos.timestamp]);
+      });
+    };
+
+    startRecording = () => {
+      console.log("Start acquisition");
+      document.getElementById("banner").style.backgroundColor = "red";
+      document.getElementById("main-btn").innerText = "Stop Recording";
+      document.getElementById("main-btn").onclick = stopRecording;
+      interval = setInterval(writePos, 1000);
+    };
+
+    stopRecording = () => {
+      console.log("Stop acquisition");
+	  clearInterval(interval)
+      document.getElementById("banner").style.backgroundColor = "blue";
+      document.getElementById("main-btn").innerText = "Send Data";
+      document.getElementById("main-btn").onclick = sendData;
+      document.getElementById("secondary-btn").style.display = "block";
+      document.getElementById("secondary-btn").onclick = (e) => {
+        location.reload();
+      };
+    };
+
+    sendData = () => {
+      axios
+        .post("/api/upload", {
+          id: "mov00",
+          firmwareVersion: "2",
+          sampleRate: 1,
+          data: posArray,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+
+    console.log(document.getElementById("main-btn"));
+    document.getElementById("main-btn").onclick = startRecording;
+  </script>
+</html>
