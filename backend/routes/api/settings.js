@@ -8,7 +8,7 @@ router.get('/shutdown', (req, res) => {
 	console.log('shutdown')
 	let cmd;
 	if (process.env.NODE_ENV === "production")
-		cmd = "shutown -h now";
+		cmd = "shutdown -h now";
 	else
 		cmd = "echo 'shutdown'";
 	exec(cmd, (error, stdout, stderr) => {
