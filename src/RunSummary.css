@@ -1,0 +1,40 @@
+.container {
+    display: table;
+    width: 100%;
+    height: 100%; /* this will be treated as a Minimum!
+                     It will stretch to fit content */
+}
+
+div.wrapper{
+    display:table-row;
+    height:0px; /* take as little as possible, 
+                   while still fitting content */
+}
+img {
+    display:table-cell;
+    width:100%; /*scale to fit*/
+}
+.bottom {
+    display:table-cell;
+    height:100%; /* take as much as possible */
+}
+
+.euiFlexGroup--gutterLarge {
+	margin: unset !important;
+}
+
+.leaflet-container {
+	z-index: 10
+}
+
+.feedback-icon {
+	cursor: pointer;
+	padding: 0;
+	border-radius: 50%;
+	width: 100px;
+}
+
+.feedback-icon:hover {
+	cursor: pointer;
+	background-color: red;
+}
