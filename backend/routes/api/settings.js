@@ -6,7 +6,11 @@ module.exports = router
 
 router.get('/shutdown', (req, res) => {
 	console.log('shutdown')
-	exec("sudo shutdown -h now", (error, stdout, stderr) => {
+	if (process.env.NODE_ENV === "production")
+		const cmd = "shutdown -h now";
+	else
+		const cmd = "echo 'shutdown'";
+	exec(cmd, (error, stdout, stderr) => {
 		// exec("sudo ls", (error, stdout, stderr) => {
 		if (stderr) {
 			console.log(`stderr: ${stderr}`);

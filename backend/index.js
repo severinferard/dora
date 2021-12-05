@@ -5,7 +5,7 @@
  * @author Séverin Férard
  *
  * Created at     : 2021-10-06 18:23:48 
- * Last modified  : 2021-12-05 01:49:48
+ * Last modified  : 2021-12-05 19:49:54
  */
 
 const express = require('express')
@@ -45,4 +45,4 @@ app.get(/.*/, (req, res) => {
 	res.sendFile(__dirname  + '/public/index.html')
 });
 
-app.listen(APP_PORT, () => console.log('DORA is running on port 5000'))
+app.listen(APP_PORT, () => console.log(`DORA is running on port ${APP_PORT}`));
