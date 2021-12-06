@@ -1,4 +1,4 @@
-import { PageHeader, Button, Descriptions, Row, Col, Empty, Form, Modal, Input, Divider, Avatar, Table, DatePicker } from "antd";
+import { PageHeader, Button, Descriptions, Row, Col, Empty, Form, Modal, Input, Divider, Avatar, Table, DatePicker, Select } from "antd";
 import { useState, useEffect } from "react";
 import "./ClassContentPanel.css";
 import AntEditableTable from "./AntEditableTable";
@@ -44,7 +44,8 @@ const NewClassContentPanel = (props) => {
       dataIndex: "deleteData",
       key: "actions",
       render: (sess) => (
-        <a href="javascript:;"
+        <a
+          href="javascript:;"
           onClick={() => {
             onDeleteSession(sess);
           }}
@@ -86,6 +87,7 @@ const NewClassContentPanel = (props) => {
   // Set the 'students' array state up on data loaded.
   useEffect(() => {
     if (!props.data) return;
+    console.log("received data", props.data);
     setStudents(props.data.students);
   }, [props.data]);
 
@@ -116,6 +118,7 @@ const NewClassContentPanel = (props) => {
       body: JSON.stringify({
         date: value.date.format("DD/MM/YYYY"),
         session_name: value.name,
+		beacons: value.beacons
       }),
     });
 
@@ -204,7 +207,7 @@ const NewClassContentPanel = (props) => {
 
   // Called when an edit in the student table is saved. If the student._id === '__new', the edit is a new student that needs to be created.
   const onSave = async (student) => {
-	  console.log("student", student)
+    console.log("student", student);
     setIsEditingStudent(false);
     if (student._id === "__new") {
       const res = await fetch(`/api/classes/${props.data._id}/students`, {
@@ -246,9 +249,7 @@ const NewClassContentPanel = (props) => {
     const val = e.nativeEvent.target.value;
     if (val === "") setStudents(props.data.students);
     setStudents(
-      props.data.students.filter((stud) => 
-	  	stud.firstName.toLowerCase().includes(val)
-		|| stud.lastName.toLowerCase().includes(val))
+      props.data.students.filter((stud) => stud.firstName.toLowerCase().includes(val) || stud.lastName.toLowerCase().includes(val))
     );
   };
 
@@ -373,9 +374,25 @@ const NewClassContentPanel = (props) => {
           >
             <Input placeholder="Seance 4" />
           </Form.Item>
-          <Form.Item label="Date" name="date" rules={[{ required: true, message: "Date manquante" }]}>
-            <DatePicker placeholder="Date" />
-          </Form.Item>
+          <Row>
+            <Col span={12}>
+              <Form.Item label="Date" name="date" rules={[{ required: true, message: "Date manquante" }]}>
+                <DatePicker placeholder="Date" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label={<>Balises<sup>(1)</sup></>} name="beacons" rules={[{ required: false }]}>
+                <Select style={{ width: 200 }} onChange={() => {}} allowClear>
+                  {props.data.school !== undefined && props.data.school.classes.map((clss) => 
+                    <Select.OptGroup label={clss.name} key={clss._id}>
+					{clss.sessions.map(sess => <Select.Option value={sess._id} key={sess._id}>{sess.session_name}</Select.Option>)}
+                    </Select.OptGroup>
+                  )}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+		  <p style={{fontSize: "smaller"}}><sup>(1)</sup>Selectionnez une séance pour voir ses balises copiées dans la séance créée.</p>
         </Form>
       </Modal>
     </div>

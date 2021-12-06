@@ -34,6 +34,7 @@ const Dashboard = () => {
       for (const school of treeData) {
         for (const clss of school.classes) {
           if (clss._id === id) {
+			clss.school = school;
             setPanelData(clss);
             return;
           }
@@ -80,6 +81,16 @@ const Dashboard = () => {
     loadTree();
   }, []);
 
+//   const getAllSessions = schools => {
+// 	let sessions = [];
+
+// 	for (const school of schools) {
+// 		for (const clss of school.classes)
+// 			sessions = sessions.concat(clss.sessions)
+// 	}
+// 	return sessions;
+// } 
+
   useDeepCompareEffect(() => {
     console.log("useDeepCompareEffect");
     // Update the data for the curerntly displayed panel;
@@ -95,6 +106,9 @@ const Dashboard = () => {
       for (const school of treeData) {
         for (const clss of school.classes) {
           if (clss._id === panelData._id) {
+			//   clss.all_sessions = getAllSessions(treeData)
+			clss.school = school;
+			console.log("SCHOOL", school)
             setPanelData(clss);
             return;
           }
@@ -158,11 +172,13 @@ const Dashboard = () => {
                 </Col>
               </Row>
             </Col>
-            <Col span={18}>
+            <Col span={17}>
               <Menu theme="light" mode="horizontal" defaultSelectedKeys={["1"]}>
                 <Menu.Item key="1">Data</Menu.Item>
-                <Menu.Item key="2">Terrain</Menu.Item>
               </Menu>
+            </Col>
+			<Col span={1}>
+				v {process.env.REACT_APP_VERSION}
             </Col>
             <Col span={1}>
               <Button icon={<SettingOutlined />} type="link" onClick={() => {window.location.href = "#/settings"}}/>
