@@ -56,12 +56,11 @@ router.get('/:student_id', async (req, res) => {
       })
 
       child.stderr.on('message', data => {
-        console.log(data)
+        Logger.error(data)
       })
 
       await new Promise((resolve, reject) => {
         child.stdout.on('end', () => {
-          console.log('end')
           var stdoutContent = Buffer.concat(stdoutChunks).toString()
           const parsed = JSON.parse(stdoutContent)
           run.rawPositions = parsed.rawPositions
@@ -77,7 +76,6 @@ router.get('/:student_id', async (req, res) => {
         })
       })
     }
-	console.log(runs)
     res.send({
       class_name: clss.name,
       class_id: clss._id,
@@ -87,7 +85,7 @@ router.get('/:student_id', async (req, res) => {
 	  student: student
     })
   } catch (error) {
-    console.log(error)
+    Logger.error(error)
   } finally {
     client.close()
   }

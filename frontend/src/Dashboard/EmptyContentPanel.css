@@ -6,6 +6,9 @@
     width: auto; 
     max-width: 40%; 
 }
+.no-selected-drawing {
+	text-align: center;
+}
 
 .no-selected-drawing > span {
 	color: rgb(110, 110, 110);

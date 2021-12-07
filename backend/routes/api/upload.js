@@ -5,13 +5,10 @@ const router = express.Router()
 module.exports = router
 
 router.get('/', async (req, res) => {
-	console.log("get");
 	res.send("test");
 })
 
 router.post('/', async (req, res) => {
-	console.log("Received post on /api/upload")
-	console.log(req.body);
   const client = await mongodb.MongoClient.connect('mongodb://localhost:27017/', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -30,7 +27,5 @@ router.post('/', async (req, res) => {
 	date: new Date().toLocaleString('fr-FR')
   }
   sessions.updateOne({ _id: currentSession._id }, { $push: { runs: obj } })
-  console.log("Added data to DB");
-  console.log(currentSession._id, currentSession.session_name)
   res.sendStatus(200)
 })

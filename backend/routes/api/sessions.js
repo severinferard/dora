@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
     };
     res.send(ret);
   } catch (error) {
-    console.log(error);
+    console.err(error);
   } finally {
     client.close();
   }
@@ -38,6 +38,7 @@ router.get("/", async (req, res) => {
 
 // New session
 router.post("/", async (req, res) => {
+  console.log("")
   const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -48,6 +49,15 @@ router.post("/", async (req, res) => {
       .db("orienteering-race-project")
       .collection("schools")
       .findOne({ classes: { $elemMatch: { _id: mongodb.ObjectID(req.query.class_id) } } });
+	const beacons = req.body.beacons !== undefined ? (await client
+		.db("orienteering-race-project")
+		.collection("sessions")
+		.findOne({ _id: mongodb.ObjectID(req.body.beacons)  }))
+		.beacons
+		: []
+
+	console.log("TEST", beacons)
+
     const newSession = {
       school_name: clss.name,
       school_id: clss._id,
@@ -56,7 +66,7 @@ router.post("/", async (req, res) => {
       session_name: req.body.session_name,
       _id: mongodb.ObjectID(),
       date: req.body.date,
-      beacons: [],
+      beacons: beacons,
 	  runs: [],
 	  isSelected: false
     };

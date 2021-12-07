@@ -1,6 +1,8 @@
 const express = require('express')
 const mongodb = require('mongodb')
+const { Logger } = require('../../logger.js')
 const classTool = require('./classes.js')
+// const {ExpressLogger, Logger} = require('./logger.js')
 
 const router = express.Router()
 module.exports = router
@@ -23,9 +25,8 @@ router.get('/', async (req, res) => {
 		}
 	}
     res.send(list)
-	console.log(list)
   } catch (error) {
-    console.log(error)
+    Logger.error(error)
   } finally {
     client.close()
   }
@@ -47,19 +48,17 @@ router.post('/', async (req, res) => {
     }
     collection.insertOne(newSchool, (err, re) => {
       if (err) throw err
-      console.log('success')
       res.send({ id: newSchool._id })
       client.close()
     })
   } catch (error) {
-    console.log(error)
+    Logger.error(error)
     client.close()
   }
 })
 
 // Delete school
 router.delete('/:school_id', async (req, res) => {
-	console.log("delete")
 	const client = await mongodb.MongoClient.connect('mongodb://localhost:27017/', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true
@@ -69,8 +68,7 @@ router.delete('/:school_id', async (req, res) => {
 	await school.classes.forEach(cls => classTool.deleteClass(client, cls._id))
 	collection.deleteOne({_id: mongodb.ObjectID(req.params.school_id)}, (err, re) => {
 		client.close()
-		if (err) {console.log(err); res.status(500).send();}
+		if (err) {Logger.error(err); res.status(500).send();}
 		else {res.status(200).send()}
-		console.log("done")
 	})
 })

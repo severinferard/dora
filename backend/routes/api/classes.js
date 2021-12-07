@@ -19,7 +19,7 @@ router.get("/:school_id", async (req, res) => {
     });
     res.send(school);
   } catch (error) {
-    console.log(error);
+	Logger.error(error);
   } finally {
     client.close();
   }
@@ -31,7 +31,6 @@ router.post("/:school_id", async (req, res) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  console.log("QDDING CLQSSE")
   try {
     const collection = client.db("orienteering-race-project").collection("schools");
     const newClass = {
@@ -40,10 +39,9 @@ router.post("/:school_id", async (req, res) => {
 	  students: [],
     };
     await collection.updateOne({ _id: mongodb.ObjectID(req.params.school_id) }, { $push: { classes: newClass } });
-	console.log("New class added succesfully");
     res.status(200).send({ id: newClass._id });
   } catch (error) {
-    console.log(error);
+    Logger.error(error);
   } finally {
 	client.close();
   }
@@ -53,7 +51,6 @@ async function deleteClass(client, class_id) {
   const collection = client.db("orienteering-race-project").collection("schools");
   const sessions = client.db("orienteering-race-project").collection("sessions");
   await sessions.deleteOne({class_id: mongodb.ObjectID(class_id)})
-  console.log( await collection.findOne( {classes: {$elemMatch: {_id: mongodb.ObjectID(class_id)}}}))
   await collection.updateOne(
     {classes: {$elemMatch: {_id: mongodb.ObjectID(class_id)}}},
     { $pull: { classes: { _id: mongodb.ObjectID(class_id) } } }
@@ -62,7 +59,6 @@ async function deleteClass(client, class_id) {
 
 // Delete class
 router.delete("/:class_id", async (req, res) => {
-	console.log("DELETE CLASS")
   const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -71,7 +67,7 @@ router.delete("/:class_id", async (req, res) => {
     await deleteClass(client, req.params.class_id);
     res.status(200).send();
   } catch (error) {
-    console.log(error);
+    Logger.error(error);
 	res.status(500).send();
   } finally {
 	client.close();
@@ -90,14 +86,12 @@ async function addStudent(client, class_id, student) {
 	  vma: student.vma,
 	  avatar: (Math.random() * 20).toFixed()
     };
-	console.log(data)
     const action = { $push: { 'classes.$.students': data } };
     await schools.updateOne(myquery, action)
 	return data;
   }
 
   router.post("/:class_id/students", async (req, res) => {
-	  console.log("POST")
 	const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -108,7 +102,6 @@ async function addStudent(client, class_id, student) {
   })
 
   async function editStudent(client, class_id, student) {
-	  console.log("STUDENT", student)
 	const schools = client.db("orienteering-race-project").collection("schools");
 	const myquery = {"classes._id": mongodb.ObjectID(class_id)}
 
@@ -121,7 +114,6 @@ async function addStudent(client, class_id, student) {
   }
 
   router.put("/:class_id/students", async (req, res) => {
-	  console.log("PUT")
 	const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -132,7 +124,6 @@ async function addStudent(client, class_id, student) {
   })
 
   async function deleteStudent(client, class_id, student) {
-	  console.log("DELETE", student)
 	const schools = client.db("orienteering-race-project").collection("schools");
 	const myquery = {"classes._id": mongodb.ObjectID(class_id)}
 	

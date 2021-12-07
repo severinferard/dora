@@ -21,8 +21,6 @@ router.get("/:session_id/:student_id", async (req, res) => {
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
 	const session = await sessions.findOne({_id: mongodb.ObjectID(req.params.session_id)});
-	console.log('session', session.session_name)
-	console.log('student_id', req.params.student_id)
     const run = session.runs.find((run) => run._id == req.params.student_id);
     run.class_name = session.class_name;
     run.class_id = session.class_id;
@@ -36,7 +34,6 @@ router.get("/:session_id/:student_id", async (req, res) => {
 		run: run,
 		beacons: session.beacons
 	}
-	console.log(JSON.stringify(arg))
 	child.stdin.write(JSON.stringify(arg))
 	child.stdin.end();
 
@@ -61,7 +58,7 @@ router.get("/:session_id/:student_id", async (req, res) => {
 	// 	res.status(500).send()
 	// })
   } catch (error) {
-    console.log(error);
+    Logger.error(error);
     res.status(500).send();
   } finally {
     client.close();
@@ -70,7 +67,6 @@ router.get("/:session_id/:student_id", async (req, res) => {
 
 // Store comment and rating
 router.post("/:session_id/:student_id", async (req, res) => {
-	console.log("body", req.body)
   const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -97,13 +93,11 @@ router.post("/:session_id/:student_id", async (req, res) => {
 
 // Delete run
 router.delete("/:session_id/:student_id", async (req, res) => {
-	console.log('std_id',req.params.student_id )
   const client = await mongodb.MongoClient.connect("mongodb://localhost:27017/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
   try {
-	  console.log('id to delete', req.params.student_id)
     const sessions = client.db("orienteering-race-project").collection("sessions");
     await sessions.updateOne({ _id: mongodb.ObjectID(req.params.session_id) }, { $pull: { runs: { _id: mongodb.ObjectID(req.params.student_id) } } })
     res.status(200).send();

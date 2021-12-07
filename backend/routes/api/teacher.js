@@ -27,7 +27,6 @@ router.get('/:session_id', async (req, res) => {
 			run: run,
 			beacons: session.beacons
 		}
-		console.log(JSON.stringify(arg))
 		child.stdin.write(JSON.stringify(arg))
 		child.stdin.end();
 		var stdoutChunks = [], stderrChunks = [];
@@ -36,12 +35,11 @@ router.get('/:session_id', async (req, res) => {
 		});
 
 		child.stderr.on('message', (data) => {
-			console.log(data)
+			Logger.error(data)
 		});
 		
 		await new Promise((resolve, reject) => {
 			child.stdout.on('end', () => {
-				console.log('end')
 				var stdoutContent = Buffer.concat(stdoutChunks).toString();
 				const parsed = JSON.parse(stdoutContent)
 				run.rawPositions = parsed.rawPositions
@@ -67,7 +65,7 @@ router.get('/:session_id', async (req, res) => {
     })
     res.send(session)
   } catch (error) {
-    console.log(error)
+    Logger.error(error)
   } finally {
     client.close()
   }

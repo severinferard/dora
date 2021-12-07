@@ -16,7 +16,12 @@ import {
   Select,
   Avatar,
   Switch,
+//   Layout, 
+//   Menu, 
+//   Divider,
 } from "antd";
+
+// import { SettingOutlined } from "@ant-design/icons";
 
 import { MapContainer, TileLayer, Marker, Popup, FeatureGroup, GeoJSON } from "react-leaflet";
 import { LineChart, Line, YAxis, CartesianGrid, Legend, ReferenceLine, ResponsiveContainer, Label } from "recharts";
@@ -30,6 +35,8 @@ import smiley3 from "../assets/smiley3.svg";
 import smiley4 from "../assets/smiley4.svg";
 import smiley5 from "../assets/smiley5.svg";
 import reticleImg from "../assets/reticle.png";
+
+// const { Header } = Layout;
 
 // Leaflet Icons
 const redIcon = new L.Icon({
@@ -214,6 +221,34 @@ const RunPage = () => {
   };
 
   return (
+	//   <Layout  style={{width: "100%", height: "100%"}}>
+	// 	<Header className="header" theme="light">
+    //       <Row>
+    //         <Col span={5}>
+    //           <Row>
+    //             <Col span={23}>
+    //               <div>
+    //                 <span className="logo">DORA</span>
+    //               </div>
+    //             </Col>
+    //             <Col span={1}>
+    //               <Divider orientation="center" type="vertical"></Divider>
+    //             </Col>
+    //           </Row>
+    //         </Col>
+    //         <Col span={17}>
+    //           <Menu theme="light" mode="horizontal" defaultSelectedKeys={["1"]}>
+    //             <Menu.Item key="1">Data</Menu.Item>
+    //           </Menu>
+    //         </Col>
+	// 		<Col span={1}>
+	// 			v {process.env.REACT_APP_VERSION}
+    //         </Col>
+    //         <Col span={1}>
+    //           <Button icon={<SettingOutlined />} type="link" onClick={() => {window.location.href = "#/settings"}}/>
+    //         </Col>
+    //       </Row> 
+    //     </Header>
     <div className="run-page-wrapper">
       {!loading && (
         <div className="run-page-container">
@@ -503,6 +538,7 @@ const RunPage = () => {
         </div>
       )}
     </div>
+	// </Layout>
   );
 };
 

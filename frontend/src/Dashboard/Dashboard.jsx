@@ -1,6 +1,5 @@
-import { Layout, Menu, Divider, Row, Col, Button, Spin } from "antd";
+import {Divider, Row, Col, Spin } from "antd";
 import "./Dashboard.css";
-import { SettingOutlined } from "@ant-design/icons";
 import MyTree from "./Tree";
 import EmptyContentPanel from "./EmptyContentPanel";
 import SchoolContentPanel from "./SchoolContentPanel";
@@ -9,7 +8,6 @@ import SessionContentPanel from "./SessionContentPanel";
 import { useState, useEffect } from "react";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import { useLocation } from "react-router-dom";
-const { Header } = Layout;
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -157,8 +155,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <Layout>
-        <Header className="header" theme="light">
+      {/* <Layout> */}
+        {/* <Header className="header" theme="light">
           <Row>
             <Col span={5}>
               <Row>
@@ -184,7 +182,7 @@ const Dashboard = () => {
               <Button icon={<SettingOutlined />} type="link" onClick={() => {window.location.href = "#/settings"}}/>
             </Col>
           </Row> 
-        </Header>
+        </Header> */}
         <Row className="main-wrapper">
           <Col span={5}>
             <Row style={{ height: "100%" }}>
@@ -212,7 +210,7 @@ const Dashboard = () => {
             </div>
           </Col>
         </Row>
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

@@ -7,7 +7,9 @@ html {
   min-height: 100%;
   height: 100%;
   padding: 0 10% 0 10%;
+  background-color: #fff;
 }
+
 
 .run-page-container {
   height: 100%;

@@ -5,13 +5,14 @@
  * @author Séverin Férard
  *
  * Created at     : 2021-10-06 18:23:48 
- * Last modified  : 2021-12-05 20:26:42
+ * Last modified  : 2021-12-07 16:55:23
  */
 
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const cors = require('cors')
+const {ExpressLogger, Logger} = require('./logger.js')
 
 require('dotenv').config({path: path.join(__dirname , '/../.env')});
 
@@ -27,6 +28,8 @@ const app = express()
 app.use(bodyParser.json({limit: '50mb'}))
 app.use(bodyParser.text());
 app.use(cors())
+
+app.use(ExpressLogger);
 
 app.use('/api/sessions',		require('./routes/api/sessions'))
 app.use('/api/runs',			require('./routes/api/runs'))
@@ -53,5 +56,5 @@ app.get(/.*/, (req, res) => {
 	res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
-console.log(`Atlases will be fetched from ${path.join(__dirname, ATLASES)}`)
-app.listen(APP_PORT, () => console.log(`DORA is running on port ${APP_PORT}`));
+Logger.info(`Atlases will be fetched from ${path.join(__dirname, ATLASES)}`)
+app.listen(APP_PORT, () => Logger.info(`DORA is running on port ${APP_PORT}`));
