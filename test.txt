@@ -1,0 +1,17 @@
+Sujet: Developpement fullstack applique aux objects connectes.
+
+Debugging
+Gestion de projet
+Logiciel embarque
+Securite IoT
+Motorring workshop decouverte electronique embarques.
+
+
+Développement fullstack appliqué aux objects connectés.
+
+
+Développement de logiciels embarqués. Recherche en architecture logiciel. Recherche en architecture réseau. Recherche en sécurité des objets connectés. Mentoring d'ateliers de découverte à l'électronique embarqué. Participation à la vie d'un laboratoire de fabrication (Fab lab).
+
+Savoir-faire: debugging (déboggage), gestion de projet, codage en C++, HTML, CSS, JavaScript, Python et autre. Savoir-être: capacité d'écoute, sens de l'initiative et du travail en équipe, travail en autonomie, enseignement et sens de la pédagogie, investissement dans les différents projets, Savoir: connaissances générales en architecture logiciel, réseau et sécurité des systèmes embarqués, competences en codage informatique.
+
+3.90 euros par heure(s) - Net:

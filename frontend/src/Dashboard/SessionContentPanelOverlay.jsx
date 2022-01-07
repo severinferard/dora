@@ -135,7 +135,11 @@ const Overlay = ({ beacons, sessionId, onUpdate, onClose, openOnEdit, openOnNew 
   // Create a new empty selection. Called when the button is clicked or when the component is created with the OpenOnNew prop set to true.
   const onNewBeacon = () => {
     setIsEdit(false);
-    const newId = Math.max(...beaconsDisplayed.map((b) => b.id)) + 1;
+    let newId;
+    if (beaconsDisplayed.length > 0)
+      newId = Math.max(...beaconsDisplayed.map((b) => b.id)) + 1;
+    else
+      newId = 1;
     setSelection({
       id: newId,
       lat: map.getCenter().lat,
@@ -322,7 +326,7 @@ const Overlay = ({ beacons, sessionId, onUpdate, onClose, openOnEdit, openOnNew 
               locale={{
                 emptyText: (
                   <Empty description="Aucune seance renseignée">
-                    <Button size="small" onClick={() => {}}>
+                    <Button size="small" onClick={onNewBeacon}>
                       Nouvelle balise
                     </Button>
                   </Empty>
