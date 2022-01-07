@@ -133,8 +133,8 @@ const RunPage = () => {
 
     let students = await fetch(`/api/classes/${response.class_id}/students`, { method: "GET" });
     students = await students.json();
+    // Make sure the student exists in the server DB
     if (students.filter((s) => s._id === response.student).length)
-      // Make sure the student exists in the server DB
       setSelectedStudent(students.find((s) => s._id === response.student)); // The selectedStudent state
     setStudents(students);
     setLoading(false); // Stop loading animation
@@ -461,7 +461,7 @@ const RunPage = () => {
                       <Col span={12}>
                         <Row>
                           <Col span={4}>
-                            <Avatar src={`/avatars/bottts${selectedStudent.avatar}.svg`}></Avatar>
+                            <Avatar src={`/avatars/bottts${selectedStudent !== null ? selectedStudent.avatar : 1}.svg`}></Avatar>
                           </Col>
                           <Col span={20}>
                             <Form.Item name="student" label="" initialValue={selectedStudent._id}>
