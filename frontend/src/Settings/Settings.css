@@ -17,3 +17,14 @@
 	width: 100%;
 	text-align: center;
 }
+
+.color-div {
+	width: 100px;
+	height: 32px;
+	background-color: red;
+	margin-right: 20px;
+}
+
+#settings-container .ant-row {
+	margin-bottom: 16px;
+}

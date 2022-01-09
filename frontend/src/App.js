@@ -8,9 +8,13 @@ import StudentSummary from './StudentRecap/StudentSummary'
 import Settings from './Settings/Settings'
 import { Layout, Menu, Divider, Col, Row, Button } from 'antd'
 import { SettingOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import configContext from "./configContext";
 
 function App () {
+  const [config, setConfig] = useState({speedTresholds: [1, 2, 3]});
   return (
+    <configContext.Provider value={{ config, setConfig }}>
 	<div className='App'>
 	  <Layout>
 		  <Layout.Header className="header" theme="light">
@@ -62,6 +66,7 @@ function App () {
       </HashRouter>
 	  </Layout>
 	  </div>
+    </configContext.Provider>
   )
 }
 

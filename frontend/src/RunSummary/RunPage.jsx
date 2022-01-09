@@ -133,6 +133,9 @@ const RunPage = () => {
 
     let students = await fetch(`/api/classes/${response.class_id}/students`, { method: "GET" });
     students = await students.json();
+    console.log(response)
+    console.log(response.student)
+    console.log(students)
     // Make sure the student exists in the server DB
     if (students.filter((s) => s._id === response.student).length)
       setSelectedStudent(students.find((s) => s._id === response.student)); // The selectedStudent state
@@ -156,10 +159,12 @@ const RunPage = () => {
   useEffect(() => {
     if (!data) return;
     const success = data.beacons.filter((b) => b.valided).length;
+    const sucessRate = success > 0 ? ((success / data.beacons.length) * 100).toFixed() : 0;
+    console.log("success", success, sucessRate)
     setBeaconSuccess(success);
-    setBeaconSuccessRate(((success / data.beacons.length) * 100).toFixed());
+    setBeaconSuccessRate(sucessRate);
     if (data.beacons.length)
-		setAverageTime(data.beacons.map((b) => b.lap)
+		  setAverageTime(data.beacons.map((b) => b.lap)
 		.reduce((prev, curr) => prev + curr) / data.beacons.length);
     else setAverageTime(-1);
   }, [data]);
@@ -464,7 +469,7 @@ const RunPage = () => {
                             <Avatar src={`/avatars/bottts${selectedStudent !== null ? selectedStudent.avatar : 1}.svg`}></Avatar>
                           </Col>
                           <Col span={20}>
-                            <Form.Item name="student" label="" initialValue={selectedStudent._id}>
+                            <Form.Item name="student" label="" initialValue={selectedStudent !== null ? selectedStudent._id : null}>
                               <Select
                                 options={students.map((s) => ({ label: `${s.firstName} ${s.lastName}`, value: s._id }))}
                                 onChange={(value) => setSelectedStudent(students.find((s) => s._id === value))}

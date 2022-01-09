@@ -1,6 +1,6 @@
 const express = require("express");
 const mongodb = require("mongodb");
-
+const {Logger} = require('../../logger')
 const router = express.Router();
 module.exports = router;
 
@@ -56,8 +56,6 @@ router.post("/", async (req, res) => {
 		.beacons
 		: []
 
-	console.log("TEST", beacons)
-
     const newSession = {
       school_name: clss.name,
       school_id: clss._id,
@@ -70,16 +68,14 @@ router.post("/", async (req, res) => {
 	  runs: [],
 	  isSelected: false
     };
-    console.log("schoolname", newSession.school_name);
-    console.log("classname", newSession.class_name);
+    Logger.debug(`Creating new session ${newSession.session_name} for class ${newSession.class_name} in school ${newSession.school_name}`)
     sessions.insertOne(newSession, (err, res) => {
       if (err) throw err;
-      console.log("success");
       client.close();
     });
     res.send({ id: newSession._id });
   } catch (error) {
-    console.log(error);
+    Logger.error(error);
     client.close();
   }
 });

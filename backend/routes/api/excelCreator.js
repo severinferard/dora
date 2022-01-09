@@ -1,8 +1,10 @@
 const ExcelJS = require("exceljs");
 const express = require("express");
 const mongodb = require("mongodb");
+const { Logger } = require('../../logger.js')
+const { spawn } = require('child_process');
 const DataLoader = require("../../DataLoader");
-const GeoJsonLoader = require("../../GeoJsonLoader");
+const fs = require('fs');
 
 const router = express.Router();
 module.exports = router;
@@ -25,6 +27,7 @@ async function createWorksheetFromSession(workbook, session) {
 	  else worksheet.getColumn(i).outlineLevel = 1;
 	}
 	session.runs.forEach((run) => {
+		// console.log("run", run)
 	  let beacons_array = [];
 	  let beaconRange = 10;
 	  let speeds = DataLoader.getSpeedFromPoints(run.rawPositions, run.sampleRate);
@@ -42,14 +45,14 @@ async function createWorksheetFromSession(workbook, session) {
 		run.id,
 		run.date,
 		chrono,
-		run.beacons.filter((b) => b.valided).length,
+		beacons.filter((b) => b.valided).length,
 		...beacons_array,
 	  ]);
 	});
 	worksheet.addRow([])
-  worksheet.addRow(['Moyenne', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=AVERAGE(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
-  worksheet.addRow(['Min', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=MIN(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
-  worksheet.addRow(['Max', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=MAX(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
+//   worksheet.addRow(['Moyenne', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=AVERAGE(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
+//   worksheet.addRow(['Min', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=MIN(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
+//   worksheet.addRow(['Max', ...headers.map((header, i) => {return !((i+1) == 2 || (i + 1) % 5 == 0) ? { formula: '=MAX(OFFSET(A1,6,COLUMN() - 1,ROW() - 1-7,1))'} : ""}).slice(1, headers.length + 1)])
   worksheet.addConditionalFormatting({
 	  ref: "A1:CA100",
 	  rules: [
@@ -109,10 +112,27 @@ router.get("/session/:session_id", async (req, res) => {
   });
   const sessions = await client.db("orienteering-race-project").collection("sessions");
   const session = await sessions.findOne({ _id: mongodb.ObjectID(req.params.session_id) });
-  const buffer = await createExcelFileFromSession(session);
-  res.setHeader("Content-Type", "application/vnd.openxmlformats");
-  res.setHeader("Content-Disposition", "attachment; filename=" + `résumé_${session.session_name.replace(/ /g, '_')}.xlsx`);
-  res.end(Buffer.from(buffer, "base64"));
+  try {
+		
+	const child = spawn("python3", [__dirname + "/../../excel.py"])
+	child.stdin.write(JSON.stringify(session))
+	child.stdin.end();
+
+	var stdoutChunks = [], stderrChunks = [];
+	child.stdout.on('data', (data) => {
+        stdoutChunks = stdoutChunks.concat(data);
+    });
+    child.stdout.on('end', () => {
+        var stdoutContent = Buffer.concat(stdoutChunks).toString();
+        if (stdoutContent.length === 0)
+			res.sendFile("/tmp/excel.xlsx")
+    });
+  } catch (error) {
+    Logger.error(error);
+    res.status(500).send();
+  } finally {
+    client.close();
+  }
 });
 
 router.get("/class/:class_id", async (req, res) => {
