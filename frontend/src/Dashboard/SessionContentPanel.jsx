@@ -247,16 +247,7 @@ const NewSessionContentPanel = (props) => {
   }
 
   const downloadExcel = () => {
-    // fetch(`/api/excel/session/${props.data._id}`, {method: "GET"})
-    window.location.href = '/api/excel/session/61d9d57366d7ea6e6e1900c3'
-  //   const url = `/api/excel/session/${props.data._id}`
-  //   console.log(url)
-  //   const a = document.createElement('a')
-  // a.href = url
-  // a.download = url.split('/').pop()
-  // document.body.appendChild(a)
-  // a.click()
-  // document.body.removeChild(a)
+    window.location.href = `/api/excel/session/${props.data._id}`
   }
 
   return (
