@@ -96,6 +96,8 @@ echo "$WIFI_SERVER_STATIC_IP dora" | tee -a /etc/hosts
 
 git clone https://github.com/severinferard/dora.atlases.git /home/ubuntu/atlases
 
+
+sudo apt install -y python3-pip
 pip3 install pandas
 # sudo networksetup -createnetworkservice Loopback lo0
 # sudo networksetup -setmanual Loopback 172.20.42.42 255.255.255.255
