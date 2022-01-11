@@ -99,5 +99,6 @@ git clone https://github.com/severinferard/dora.atlases.git /home/ubuntu/atlases
 
 sudo apt install -y python3-pip
 pip3 install pandas
+pip3 install openpyxl
 # sudo networksetup -createnetworkservice Loopback lo0
 # sudo networksetup -setmanual Loopback 172.20.42.42 255.255.255.255
