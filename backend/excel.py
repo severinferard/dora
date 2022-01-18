@@ -7,12 +7,18 @@ from analyse import cleanup_data, evaluate_beacon, time, distance, average_speed
 
 def make_raw_dataframe(data):
     cols = {}
+    max_col = max([len(cleanup_data(run["rawPositions"])) for run in data["runs"]])
     for run in data["runs"]:
         positions = cleanup_data(run["rawPositions"])
         prefix = run["_id"]
         cols[prefix + "_pos_x"] = [pos[0] for pos in positions]
         cols[prefix + "_pos_y"] = [pos[1] for pos in positions]
         cols[prefix + "_ts"] = [pos[2] for pos in positions]
+        size = len(cleanup_data(run["rawPositions"]))
+        for _ in range(max_col - size):
+            cols[prefix + "_pos_x"].append(0)
+            cols[prefix + "_pos_y"].append(0)
+            cols[prefix + "_ts"].append(0)
     return (pd.DataFrame(data=cols))
 
 
