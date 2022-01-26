@@ -268,7 +268,10 @@ const NewSessionContentPanel = (props) => {
           <Button key="2" onClick={() => downloadExcel()}>
           Excel
         </Button>,
-          <Button key="2" onClick={() => onDeleteSession(props.data)}>
+		<Button key="3" onClick={() => {window.location.href = `/#/session-summary/${props.data._id}`}}>
+		Résumé
+		</Button>,
+          <Button key="4" onClick={() => onDeleteSession(props.data)}>
             Supprimer
           </Button>,
         ]}
