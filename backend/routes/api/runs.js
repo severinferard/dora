@@ -2,6 +2,7 @@ const express = require("express");
 const mongodb = require("mongodb");
 const GeoJsonLoader = require("../../GeoJsonLoader");
 const { spawn } = require('child_process');
+const {Logger} = require('../../logger')
 
 const router = express.Router();
 module.exports = router;

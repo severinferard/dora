@@ -3,6 +3,7 @@ const mongodb = require('mongodb')
 const GeoJsonLoader = require('../../GeoJsonLoader')
 const DataLoader = require('../../DataLoader')
 const { spawn } = require('child_process');
+const {Logger} = require('../../logger')
 
 const router = express.Router()
 module.exports = router

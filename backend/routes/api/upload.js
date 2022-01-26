@@ -1,6 +1,6 @@
 const express = require('express')
 const mongodb = require('mongodb')
-
+const {Logger} = require('../../logger')
 const router = express.Router()
 module.exports = router
 
