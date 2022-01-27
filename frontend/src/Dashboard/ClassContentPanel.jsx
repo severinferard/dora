@@ -274,7 +274,7 @@ const NewClassContentPanel = (props) => {
           <Descriptions.Item label="Séances">
             {props.data.sessions.map((sess, idx) => `${idx === 0 ? "" : ", "}${sess.session_name}`)}
           </Descriptions.Item>
-          <Descriptions.Item label="Nombre d'élèves">{0}</Descriptions.Item>
+          <Descriptions.Item label="Nombre d'élèves">{props.data.students.length}</Descriptions.Item>
         </Descriptions>
       </PageHeader>
       <Row>

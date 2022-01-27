@@ -115,6 +115,7 @@ router.get("/session/:session_id", async (req, res) => {
   try {
 		
 	const child = spawn("python3", [__dirname + "/../../excel.py"])
+	console.log(JSON.stringify(session))
 	child.stdin.write(JSON.stringify(session))
 	child.stdin.end();
 

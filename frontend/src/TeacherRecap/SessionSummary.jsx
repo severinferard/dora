@@ -160,8 +160,7 @@ const SessionSummary = (props) => {
   const geoJSONStyleFunc = (feature) => {
     return {
       color: data.colorMap.get(feature.properties.id),
-      weight: 5,
-    };
+    }
   };
 
   const getFullName = (student) => {
