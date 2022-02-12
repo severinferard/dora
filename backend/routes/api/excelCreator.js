@@ -115,18 +115,21 @@ router.get("/session/:session_id", async (req, res) => {
   try {
 		
 	const child = spawn("python3", [__dirname + "/../../excel.py"])
-	console.log(JSON.stringify(session))
+	console.log("waiting for python to send excel")
+	// console.log(JSON.stringify(session))
 	child.stdin.write(JSON.stringify(session))
 	child.stdin.end();
 
 	var stdoutChunks = [], stderrChunks = [];
+	child.stderr.on('data', (data) => {console.log(data)})
 	child.stdout.on('data', (data) => {
         stdoutChunks = stdoutChunks.concat(data);
     });
     child.stdout.on('end', () => {
         var stdoutContent = Buffer.concat(stdoutChunks).toString();
-        if (stdoutContent.length === 0)
-			res.sendFile("/tmp/excel.xlsx")
+		buffer = Buffer.from(stdoutContent, 'base64');
+		res.set({'Content-Disposition': `attachment; filename=${session.class_name}-${session.session_name}.xlsx`, 'Content-Type': 'text/xlsx'});
+		res.send(buffer)
     });
   } catch (error) {
     Logger.error(error);

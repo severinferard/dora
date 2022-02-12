@@ -1,8 +1,10 @@
 import json
 import sys
+from time import sleep
 import pandas as pd
 from analyse import cleanup_data, evaluate_beacon, time, distance, average_speed
-
+import io
+import base64
 
 
 def make_raw_dataframe(data):
@@ -55,9 +57,16 @@ def main():
     json_data = json.loads(data)
     raw_dataframe = make_raw_dataframe(json_data)
     beacons_dataframe = make_beacons_dataframe(json_data)
-    with pd.ExcelWriter("/tmp/excel.xlsx") as writer:
-        raw_dataframe.to_excel(writer, sheet_name="Données brutes")
-        beacons_dataframe.to_excel(writer, sheet_name="Balises")
+
+    # Create file in memory and write it as base64 to stdout
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output,engine='xlsxwriter')
+    raw_dataframe.to_excel(writer, sheet_name="Données brutes")
+    beacons_dataframe.to_excel(writer, sheet_name="Balises")
+    writer.save()
+    output.seek(0)
+    b = base64.b64encode(output.read()).decode()
+    sys.stdout.write(b)
     sys.stdout.flush()
 
 
