@@ -25,7 +25,7 @@ static const uint32_t GPSBaud = 9600;
 #define READ_BUFFER_SIZE 100
 
 // SOFTWARE
-#define MOV_ID              "mov01"
+#define MOV_ID              "mov24"
 #define FIRMWARE_VERSION    "1.0"
 #define SAMPLE_RATE         "1"
 

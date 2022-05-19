@@ -86,11 +86,8 @@ const NewSessionContentPanel = (props) => {
         dataIndex: "student",
         key: "id",
 		render: (_, record) =>{
-      // console.log("record", record.student)
-      // console.log("studends", students ,record.student)
-			if (record.student !== undefined && record.student !== null && students.length) {
-        const studObj = students.find(s => s._id === record.student)
-				return getStudentFullName(studObj)
+			if (record.student !== undefined && students.length) {
+				return getStudentFullName(students.find(s => s._id === record.student))
 			} else
 				return record.id
 		}

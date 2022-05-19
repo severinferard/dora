@@ -29,13 +29,12 @@ router.get("/:session_id/:student_id", async (req, res) => {
     run.school_id = session.school_id;
     run.session_name = session.session_name;
 	run.session_date = session.date;
-  
+	
 	const child = spawn("python3", [__dirname + "/../../analyse.py"])
 	arg = {
 		run: run,
 		beacons: session.beacons
 	}
-  console.log(JSON.stringify(arg))
 	child.stdin.write(JSON.stringify(arg))
 	child.stdin.end();
 
