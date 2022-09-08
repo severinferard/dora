@@ -112,7 +112,7 @@ router.get("/session/:session_id", async (req, res) => {
     useUnifiedTopology: true,
   });
   const sessions = await client.db("orienteering-race-project").collection("sessions");
-  const session = await sessions.findOne({ _id: mongodb.ObjectID(req.params.session_id) });
+  const session = await sessions.findOne({ _id: mongodb.ObjectId(req.params.session_id) });
   try {
 		
 	const child = spawn("python3", [__dirname + "/../../excel.py"])
@@ -146,7 +146,7 @@ router.get("/class/:class_id", async (req, res) => {
 	  useUnifiedTopology: true,
 	});
 	const collection = await client.db("orienteering-race-project").collection("sessions");
-	const sessions = await (await collection.find({ class_id: mongodb.ObjectID(req.params.class_id) })).toArray();
+	const sessions = await (await collection.find({ class_id: mongodb.ObjectId(req.params.class_id) })).toArray();
 	console.log('tessions',sessions[0])
 	const buffer = await createExcelFileFromClass(sessions);
 	res.setHeader("Content-Type", "application/vnd.openxmlformats");

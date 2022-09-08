@@ -36,8 +36,8 @@ services:
     command: run
     restart: always
     volumes:
-      - osm-db:/var/lib/postgresql/12/main
-      - osm-prerendered:/var/lib/mod_tile
+      - osm-data:/data/database
+      - osm-tiles:/data/tiles
     ports:
       - 8000:80
 

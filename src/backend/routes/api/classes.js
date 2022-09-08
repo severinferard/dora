@@ -13,7 +13,7 @@ router.get("/:school_id", async (req, res) => {
   });
   try {
     const collection = client.db("orienteering-race-project").collection("schools");
-    const school = await collection.findOne({ _id: mongodb.ObjectID(req.params.school_id) });
+    const school = await collection.findOne({ _id: mongodb.ObjectId(req.params.school_id) });
     school.id = school._id;
     school.classes.forEach((cls) => {
       cls.id = cls._id;
@@ -35,11 +35,11 @@ router.post("/:school_id", async (req, res) => {
   try {
     const collection = client.db("orienteering-race-project").collection("schools");
     const newClass = {
-      _id: mongodb.ObjectID(),
+      _id: mongodb.ObjectId(),
       name: req.body.name,
 	  students: [],
     };
-    await collection.updateOne({ _id: mongodb.ObjectID(req.params.school_id) }, { $push: { classes: newClass } });
+    await collection.updateOne({ _id: mongodb.ObjectId(req.params.school_id) }, { $push: { classes: newClass } });
     res.status(200).send({ id: newClass._id });
   } catch (error) {
     Logger.error(error);
@@ -51,10 +51,10 @@ router.post("/:school_id", async (req, res) => {
 async function deleteClass(client, class_id) {
   const collection = client.db("orienteering-race-project").collection("schools");
   const sessions = client.db("orienteering-race-project").collection("sessions");
-  await sessions.deleteOne({class_id: mongodb.ObjectID(class_id)})
+  await sessions.deleteOne({class_id: mongodb.ObjectId(class_id)})
   await collection.updateOne(
-    {classes: {$elemMatch: {_id: mongodb.ObjectID(class_id)}}},
-    { $pull: { classes: { _id: mongodb.ObjectID(class_id) } } }
+    {classes: {$elemMatch: {_id: mongodb.ObjectId(class_id)}}},
+    { $pull: { classes: { _id: mongodb.ObjectId(class_id) } } }
   );
 }
 
@@ -77,7 +77,7 @@ router.delete("/:class_id", async (req, res) => {
 
 async function addStudent(client, class_id, student) {
 	const schools = client.db("orienteering-race-project").collection("schools");
-	const myquery = {"classes._id": mongodb.ObjectID(class_id)}
+	const myquery = {"classes._id": mongodb.ObjectId(class_id)}
 
 	const _id = Math.random().toString(36).slice(-5);
     const data = {
@@ -104,7 +104,7 @@ async function addStudent(client, class_id, student) {
 
   async function editStudent(client, class_id, student) {
 	const schools = client.db("orienteering-race-project").collection("schools");
-	const myquery = {"classes._id": mongodb.ObjectID(class_id)}
+	const myquery = {"classes._id": mongodb.ObjectId(class_id)}
 
 	const students = (await schools.findOne(myquery)).classes.find(clss => clss._id == class_id).students
 	students[students.findIndex(s => s._id === student._id)] = student
@@ -126,7 +126,7 @@ async function addStudent(client, class_id, student) {
 
   async function deleteStudent(client, class_id, student) {
 	const schools = client.db("orienteering-race-project").collection("schools");
-	const myquery = {"classes._id": mongodb.ObjectID(class_id)}
+	const myquery = {"classes._id": mongodb.ObjectId(class_id)}
 	
 	const students = (await schools.findOne(myquery)).classes.find(clss => clss._id == class_id).students
 	students.splice(students.findIndex(s => s._id == student._id), 1)
@@ -148,7 +148,7 @@ async function addStudent(client, class_id, student) {
 
   async function getStudents(client, class_id) {
   const schools = client.db("orienteering-race-project").collection("schools");
-  const myquery = {"classes._id": mongodb.ObjectID(class_id)}
+  const myquery = {"classes._id": mongodb.ObjectId(class_id)}
   
   const students = (await schools.findOne(myquery)).classes.find(clss => clss._id == class_id).students
   return students;

@@ -12,11 +12,11 @@ router.get("/", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    const list = await sessions.find({ class_id: mongodb.ObjectID(req.query.class_id) }).toArray();
+    const list = await sessions.find({ class_id: mongodb.ObjectId(req.query.class_id) }).toArray();
     const clss = await client
       .db("orienteering-race-project")
       .collection("schools")
-      .findOne({ classes: { $elemMatch: { _id: mongodb.ObjectID(req.query.class_id) } } });
+      .findOne({ classes: { $elemMatch: { _id: mongodb.ObjectId(req.query.class_id) } } });
     list.forEach((v) => {
       delete v.runs;
       delete v.geosJon;
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
     });
     let ret = {
       class_name: clss.classes.filter((c) => c._id == req.query.class_id)[0].name,
-      class_id: mongodb.ObjectID(req.query.class_id),
+      class_id: mongodb.ObjectId(req.query.class_id),
       school_name: clss.name,
       school_id: clss._id,
       sessions: list,
@@ -49,21 +49,21 @@ router.post("/", async (req, res) => {
     const clss = await client
       .db("orienteering-race-project")
       .collection("schools")
-      .findOne({ classes: { $elemMatch: { _id: mongodb.ObjectID(req.query.class_id) } } });
+      .findOne({ classes: { $elemMatch: { _id: mongodb.ObjectId(req.query.class_id) } } });
 	const beacons = req.body.beacons !== undefined ? (await client
 		.db("orienteering-race-project")
 		.collection("sessions")
-		.findOne({ _id: mongodb.ObjectID(req.body.beacons)  }))
+		.findOne({ _id: mongodb.ObjectId(req.body.beacons)  }))
 		.beacons
 		: []
 
     const newSession = {
       school_name: clss.name,
       school_id: clss._id,
-      class_id: mongodb.ObjectID(req.query.class_id),
+      class_id: mongodb.ObjectId(req.query.class_id),
       class_name: clss.classes.filter((c) => c._id == req.query.class_id)[0].name,
       session_name: req.body.session_name,
-      _id: mongodb.ObjectID(),
+      _id: mongodb.ObjectId(),
       date: req.body.date,
       beacons: beacons,
 	  runs: [],
@@ -90,8 +90,8 @@ router.get("/:session_id", async (req, res) => {
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
     const schools = client.db("orienteering-race-project").collection("schools");
-    const session = await sessions.findOne({ _id: mongodb.ObjectID(req.params.session_id) });
-    const school = await schools.findOne({ classes: { $elemMatch: { _id: mongodb.ObjectID(session.class_id) } } });
+    const session = await sessions.findOne({ _id: mongodb.ObjectId(req.params.session_id) });
+    const school = await schools.findOne({ classes: { $elemMatch: { _id: mongodb.ObjectId(session.class_id) } } });
 	session.schoolId = school._id;
     res.send(session);
   } catch (error) {
@@ -104,7 +104,7 @@ router.get("/:session_id", async (req, res) => {
 async function deleteSession(client, session_id) {
 	const sessions = client.db("orienteering-race-project").collection("sessions");
     const schools = client.db("orienteering-race-project").collection("schools");
-    await sessions.deleteOne({ _id: mongodb.ObjectID(session_id) });
+    await sessions.deleteOne({ _id: mongodb.ObjectId(session_id) });
 }
 
 //Delete session
@@ -132,7 +132,7 @@ router.put("/:session_id/beacons", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    const myquery = { _id: mongodb.ObjectID(req.params.session_id) };
+    const myquery = { _id: mongodb.ObjectId(req.params.session_id) };
     const data = {
       _id: req.body._id,
       id: req.body.id,
@@ -161,7 +161,7 @@ router.post("/:session_id/beacons", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    const myquery = { _id: mongodb.ObjectID(req.params.session_id) };
+    const myquery = { _id: mongodb.ObjectId(req.params.session_id) };
 	const _id = Math.random().toString(36).slice(-5);
     const data = {
       _id: _id,
@@ -189,7 +189,7 @@ router.delete("/:session_id/beacons", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    const myquery = { _id: mongodb.ObjectID(req.params.session_id) };
+    const myquery = { _id: mongodb.ObjectId(req.params.session_id) };
     const data = { _id: req.body._id };
     const action = { $pull: { beacons: { _id: data._id } } };
     sessions.updateOne(myquery, action, (err, res) => {

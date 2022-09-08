@@ -17,10 +17,10 @@ router.get('/:session_id', async (req, res) => {
   try {
     const sessions = client.db('orienteering-race-project').collection('sessions')
 	const schools = client.db('orienteering-race-project').collection('schools')
-    const session = (await sessions.find({ _id: mongodb.ObjectID(req.params.session_id) }).toArray())[0]
+    const session = (await sessions.find({ _id: mongodb.ObjectId(req.params.session_id) }).toArray())[0]
     const sessionBeacons = session.beacons
     const beaconRange = 10
-	const students = (await schools.findOne({"classes._id": mongodb.ObjectID(session.class_id)}))
+	const students = (await schools.findOne({"classes._id": mongodb.ObjectId(session.class_id)}))
 		.classes.find(clss => clss._id.toString() == session.class_id.toString()).students
     for (const run of session.runs ) {
 		const child = spawn("python3", [__dirname + "/../../analyse.py"])

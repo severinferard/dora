@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
   const currentSession = await sessions.findOne({ isSelected: true })
   const rawData = req.body
   const obj = {
-	_id: mongodb.ObjectID(),
+	_id: mongodb.ObjectId(),
     id: rawData.id,
     firmwareVersion: rawData.firmwareVersion,
     sampleRate: rawData.sampleRate,

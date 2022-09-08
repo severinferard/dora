@@ -22,7 +22,7 @@ router.get("/:session_id/:student_id", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-	const session = await sessions.findOne({_id: mongodb.ObjectID(req.params.session_id)});
+	const session = await sessions.findOne({_id: mongodb.ObjectId(req.params.session_id)});
     const run = session.runs.find((run) => run._id == req.params.student_id);
     run.class_name = session.class_name;
     run.class_id = session.class_id;
@@ -75,7 +75,7 @@ router.post("/:session_id/:student_id", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    const myquery = { _id: mongodb.ObjectID(req.params.session_id) };
+    const myquery = { _id: mongodb.ObjectId(req.params.session_id) };
     const newvalues = {
       $set: {
         "runs.$[run].comment": req.body.comment,
@@ -83,7 +83,7 @@ router.post("/:session_id/:student_id", async (req, res) => {
 		"runs.$[run].student": req.body.student,
       },
     };
-    const options = { arrayFilters: [{ "run._id": mongodb.ObjectID(req.params.student_id) }] };
+    const options = { arrayFilters: [{ "run._id": mongodb.ObjectId(req.params.student_id) }] };
     await sessions.updateOne(myquery, newvalues, options);
     res.status(200).send();
   } catch (error) {
@@ -101,7 +101,7 @@ router.delete("/:session_id/:student_id", async (req, res) => {
   });
   try {
     const sessions = client.db("orienteering-race-project").collection("sessions");
-    await sessions.updateOne({ _id: mongodb.ObjectID(req.params.session_id) }, { $pull: { runs: { _id: mongodb.ObjectID(req.params.student_id) } } })
+    await sessions.updateOne({ _id: mongodb.ObjectId(req.params.session_id) }, { $pull: { runs: { _id: mongodb.ObjectId(req.params.student_id) } } })
     res.status(200).send();
   } catch (error) {
     res.status(500).send();

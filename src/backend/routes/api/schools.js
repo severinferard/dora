@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 		school.id = school._id 
 		for (const clss of school.classes) {
 			clss.school_name = school.name
-			clss.sessions = await sessions.find({ class_id: mongodb.ObjectID(clss._id) }).toArray();
+			clss.sessions = await sessions.find({ class_id: mongodb.ObjectId(clss._id) }).toArray();
 		}
 	}
     res.send(list)
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     const collection = client.db('orienteering-race-project').collection('schools')
     const newSchool = {
       name: req.body.name,
-      _id: new mongodb.ObjectID(),
+      _id: new mongodb.ObjectId(),
 	  city: req.body.city,
 	  classes: []
     }
@@ -66,9 +66,9 @@ router.delete('/:school_id', async (req, res) => {
 		useUnifiedTopology: true
 	})
 	const collection = client.db('orienteering-race-project').collection('schools')
-	const school = await collection.findOne({_id: mongodb.ObjectID(req.params.school_id)})
+	const school = await collection.findOne({_id: mongodb.ObjectId(req.params.school_id)})
 	await school.classes.forEach(cls => classTool.deleteClass(client, cls._id))
-	collection.deleteOne({_id: mongodb.ObjectID(req.params.school_id)}, (err, re) => {
+	collection.deleteOne({_id: mongodb.ObjectId(req.params.school_id)}, (err, re) => {
 		client.close()
 		if (err) {Logger.error(err); res.status(500).send();}
 		else {res.status(200).send()}

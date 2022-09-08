@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   try {
     const collection = client.db("orienteering-race-project").collection("sessions");
     await collection.updateMany({}, { $set: { isSelected: false } });
-    await collection.updateOne({ _id: mongodb.ObjectID(req.body.id) }, { $set: { isSelected: true } });
+    await collection.updateOne({ _id: mongodb.ObjectId(req.body.id) }, { $set: { isSelected: true } });
     res.status(200).send();
   } catch (error) {
 	Logger.error(error);
