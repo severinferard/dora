@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  dora:
+    build: .
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ./src/backend:/root/dora/backend
+    environment:
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - dora-mongo:/data/db
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+    depends_on:
+      - mongo
+
+  osm:
+    image: overv/openstreetmap-tile-server:latest
+    command: run
+    restart: always
+    volumes:
+      - osm-db:/var/lib/postgresql/12/main
+      - osm-prerendered:/var/lib/mod_tile
+    ports:
+      - 8000:80
+
+volumes:
+  dora-mongo:
+  osm-data:
+    external: true
+  osm-tiles:
+    external: true
+
