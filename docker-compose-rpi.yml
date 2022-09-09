@@ -32,7 +32,10 @@ services:
       - mongo
 
   osm:
-    image: overv/openstreetmap-tile-server:latest
+    build:
+      context: ./openstreetmap-tile-server
+      dockerfile: dockerfile
+    image: osm/rebuilt
     command: run
     restart: always
     volumes:
@@ -40,6 +43,21 @@ services:
       - osm-tiles:/data/tiles
     ports:
       - 8000:80
+
+  hostap:
+    build:
+      context: ./rpi-ap
+      dockerfile: dockerfile
+    environment:
+      MODE: wpa2
+      SSID: dora
+      WPA2_PASS: password
+    cap_add:
+      - NET_ADMIN
+    stop_grace_period: 2m
+    network_mode: "host"
+    privileged: true
+    restart: always
 
 volumes:
   dora-mongo:

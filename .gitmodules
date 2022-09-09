@@ -1,0 +1,6 @@
+[submodule "src/openstreetmap-tile-server"]
+	path = src/openstreetmap-tile-server
+	url = https://github.com/Overv/openstreetmap-tile-server.git
+[submodule "src/mongo-express-docker"]
+	path = src/mongo-express-docker
+	url = https://github.com/mongo-express/mongo-express-docker.git

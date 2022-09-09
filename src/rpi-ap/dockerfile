@@ -1,0 +1,20 @@
+from arm32v6/alpine
+
+# Install packages
+RUN apk update && apk add hostapd iw dhcp vim iptables
+
+# Configure Hostapd (default will be open)
+COPY confs/hostapd_confs /hostapd_confs
+# Configure DHCPD
+COPY confs/dhcpd.conf /etc/dhcp/dhcpd.conf
+RUN touch /var/lib/dhcp/dhcpd.leases
+
+# Configure networking
+COPY confs/interfaces /etc/network/interfaces
+COPY confs/iptables.sh /iptables.sh
+COPY confs/iptables_off.sh /iptables_off.sh
+
+# Copy and execute init file
+COPY confs/start.sh /start.sh
+CMD ["/bin/sh", "/start.sh"]
+
