@@ -66,3 +66,5 @@ volumes:
   osm-tiles:
     external: true
 
+# RPI -> rfkill list && rfkill unblock 
+
