@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.d2a28d40.chunk.css",
-    "main.js": "/static/js/main.c6d5a1d2.chunk.js",
-    "main.js.map": "/static/js/main.c6d5a1d2.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.1b827530.js",
-    "runtime-main.js.map": "/static/js/runtime-main.1b827530.js.map",
-    "static/css/2.47b785b0.chunk.css": "/static/css/2.47b785b0.chunk.css",
-    "static/js/2.22a8cdab.chunk.js": "/static/js/2.22a8cdab.chunk.js",
-    "static/js/2.22a8cdab.chunk.js.map": "/static/js/2.22a8cdab.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.47b785b0.chunk.css.map": "/static/css/2.47b785b0.chunk.css.map",
-    "static/css/main.d2a28d40.chunk.css.map": "/static/css/main.d2a28d40.chunk.css.map",
-    "static/js/2.22a8cdab.chunk.js.LICENSE.txt": "/static/js/2.22a8cdab.chunk.js.LICENSE.txt",
-    "static/media/conifer-branches-all-over-the-world.3a06a513.png": "/static/media/conifer-branches-all-over-the-world.3a06a513.png",
-    "static/media/smiley1.039473c0.svg": "/static/media/smiley1.039473c0.svg",
-    "static/media/smiley2.983cf7be.svg": "/static/media/smiley2.983cf7be.svg",
-    "static/media/smiley3.d9303815.svg": "/static/media/smiley3.d9303815.svg",
-    "static/media/smiley4.21e90bc7.svg": "/static/media/smiley4.21e90bc7.svg",
-    "static/media/smiley5.c6ea129e.svg": "/static/media/smiley5.c6ea129e.svg"
+    "main.css": "/dora/gounod/static/css/main.d2a28d40.chunk.css",
+    "main.js": "/dora/gounod/static/js/main.27b75085.chunk.js",
+    "main.js.map": "/dora/gounod/static/js/main.27b75085.chunk.js.map",
+    "runtime-main.js": "/dora/gounod/static/js/runtime-main.6c66f3f8.js",
+    "runtime-main.js.map": "/dora/gounod/static/js/runtime-main.6c66f3f8.js.map",
+    "static/css/2.75161f5a.chunk.css": "/dora/gounod/static/css/2.75161f5a.chunk.css",
+    "static/js/2.402bbec1.chunk.js": "/dora/gounod/static/js/2.402bbec1.chunk.js",
+    "static/js/2.402bbec1.chunk.js.map": "/dora/gounod/static/js/2.402bbec1.chunk.js.map",
+    "index.html": "/dora/gounod/index.html",
+    "static/css/2.75161f5a.chunk.css.map": "/dora/gounod/static/css/2.75161f5a.chunk.css.map",
+    "static/css/main.d2a28d40.chunk.css.map": "/dora/gounod/static/css/main.d2a28d40.chunk.css.map",
+    "static/js/2.402bbec1.chunk.js.LICENSE.txt": "/dora/gounod/static/js/2.402bbec1.chunk.js.LICENSE.txt",
+    "static/media/conifer-branches-all-over-the-world.3a06a513.png": "/dora/gounod/static/media/conifer-branches-all-over-the-world.3a06a513.png",
+    "static/media/smiley1.039473c0.svg": "/dora/gounod/static/media/smiley1.039473c0.svg",
+    "static/media/smiley2.983cf7be.svg": "/dora/gounod/static/media/smiley2.983cf7be.svg",
+    "static/media/smiley3.d9303815.svg": "/dora/gounod/static/media/smiley3.d9303815.svg",
+    "static/media/smiley4.21e90bc7.svg": "/dora/gounod/static/media/smiley4.21e90bc7.svg",
+    "static/media/smiley5.c6ea129e.svg": "/dora/gounod/static/media/smiley5.c6ea129e.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.1b827530.js",
-    "static/css/2.47b785b0.chunk.css",
-    "static/js/2.22a8cdab.chunk.js",
+    "static/js/runtime-main.6c66f3f8.js",
+    "static/css/2.75161f5a.chunk.css",
+    "static/js/2.402bbec1.chunk.js",
     "static/css/main.d2a28d40.chunk.css",
-    "static/js/main.c6d5a1d2.chunk.js"
+    "static/js/main.27b75085.chunk.js"
   ]
 }
